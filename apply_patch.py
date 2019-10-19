@@ -10,7 +10,7 @@ def _args():
 
     return argv[1], argv[2]
 
-def insert_patch(str_orig, str_search, str_insert, mode):
+def _insert_patch(str_orig, str_search, str_insert, mode):
 
     if mode == "final":
         str_orig.append(str_insert)
@@ -37,7 +37,7 @@ def main():
         patch_file.close()
         
         # First line of patch: original file location
-        path_to_file = patch_list[0].split() #Remove '\n' in end of the line
+        path_to_file = patch_list[0].split() # Remove '\n' in end of the line
         orig_file = open(base_dir + "/" + path_to_file[0], "r")
         orig_list = orig_file.readlines()
         orig_file.close()
@@ -56,14 +56,15 @@ def main():
         str_search = ''.join(list_search)
 
         # Apply patch
-        output = insert_patch(orig_list, str_search, str_insert, patch_mode)
+        output = _insert_patch(orig_list, str_search, str_insert, patch_mode)
 
         # Write patched file
-        path_to_file = patch_list[0].split() #Remove '\n' in end of the line
+        path_to_file = patch_list[0].split() # Remove '\n' in end of the line
         orig_file = open(base_dir + "/" + path_to_file[0], "w")
         orig_file.writelines(output)
         orig_file.close()
 
         print("File " + base_dir + "/" + patch_list[0] + " modified")
 
-main()
+if __name__ == '__main__':
+    main()
